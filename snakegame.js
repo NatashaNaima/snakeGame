@@ -2,7 +2,11 @@ var boardBorder = "black";
 var boardBackground = "white";
 var snakeColour = "lightblue";
 var snakeBorder = "darkblue";
+var foodColour = "lightgreen";
+var foodBorder = "darkgreen";
 
+var foodX;
+var foodY;
 //true if changing direction
 var changingDirection = false;
 //velocities
@@ -102,6 +106,30 @@ function hasGameEnded(){
     
     return hitBot || hitLeft || hitTop || hitRight;
 }
+
+function randomFood(min,max){
+    return Math.round((Math.random() * (max-min) + min) / 10) * 10; 
+}
+
+function drawFood(){
+    snakeboard_ctx.fillStyle = foodColour;
+    snakeboard_ctx.strokeStyle = foodBorder;
+    snakeboard_ctx.fillRect(foodX,foodY,10,10);
+    snakeboard_ctx.strokeRect(foodX,foodY,10,10);
+}
+
+function genFood(){
+    //x cooredinate of food
+    foodX = randomFood(0,snakeboard.width - 10);
+    // y coordinate of food
+    foodY = randomFood(0,snakeboard.height - 10);
+    snake.forEach(function hasSnakeEaten(part){
+        var hasEaten = part.x == foodX && part.y == foodY;
+        if(hasEaten){
+            genFood();
+        }
+    });
+}
         
 //called when game starts
 function main(){
@@ -111,12 +139,15 @@ function main(){
     changingDirection = false;
     setTimeout(function onTick(){ 
         clearCanvas(); 
+        drawFood();
         moveSnake(); 
         drawSnake();
+        //repeat until game has ended
         main();
     },100)
 }
 
+genFood();
 //start game
 main();
 //listen for keypress
