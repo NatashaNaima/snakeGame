@@ -65,8 +65,8 @@ function changeDirection(event){
     var keypressed = event.keyCode;
     
     //directional velocities
-    var goingUP = dy === -10;
-    var goingDOWN = dy ===10;
+    var goingUP = dy === 10;
+    var goingDOWN = dy ===-10;
     var goingRIGHT = dx === 10;
     var goingLEFT = dx === -10;
     
